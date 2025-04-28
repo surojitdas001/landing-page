@@ -4,13 +4,30 @@
 
 /* Custom classes */
 @layer base {
+  html {
+    /* Add scroll-timeline properties */
+    scroll-behavior: smooth;
+    scroll-timeline: none;
+    scroll-timeline-name: none;
+    /* Increase scroll time duration */
+    transition: all 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     font-family: "Overlock", system-ui, -apple-system, sans-serif;
     color: white;
     background-color: #111827;
     overflow-x: hidden;
+    scroll-behavior: smooth;
+    transition: all 1.2s cubic-bezier(0.65, 0, 0.35, 1);
   }
-  
+
+  /* Optional: Hide scrollbar while keeping functionality */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Text Arc Menu Animation */
   @keyframes textGlow {
     0% { text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); }

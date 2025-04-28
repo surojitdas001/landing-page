@@ -6,35 +6,35 @@ const ProductsSection = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [sectionRef, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.1,
+    threshold: 0.3,
   });
 
-  const products = [
-    {
-      id: 1,
-      title: "Technology Solutions",
-      description: "Cutting-edge technology solutions for modern businesses",
-      icon: "🚀",
-      color: "from-blue-500 to-indigo-600",
-      shadowColor: "shadow-blue-500/40"
-    },
-    {
-      id: 2,
-      title: "Cloud Services",
-      description: "Scalable and secure cloud infrastructure services",
-      icon: "☁️",
-      color: "from-purple-500 to-violet-600",
-      shadowColor: "shadow-purple-500/40"
-    },
-    {
-      id: 3,
-      title: "Digital Transformation",
-      description: "Complete digital transformation strategies and implementation",
-      icon: "🔄",
-      color: "from-green-500 to-emerald-600",
-      shadowColor: "shadow-green-500/40"
-    }
-  ];
+const products = [
+  {
+    id: 1,
+    title: "Portland Cement",
+    description: "High-quality Portland cement for construction projects",
+    icon: "🏗️",
+    color: "from-black to-gray-500",
+    shadowColor: "shadow-orange-500/40"
+  },
+  {
+    id: 2,
+    title: "Ready Mix Concrete",
+    description: "Custom ready-mix concrete solutions for all applications",
+    icon: "🏢",
+    color: "from-gray-300 to-orange-600",
+    shadowColor: "shadow-black/40"
+  },
+  {
+    id: 3,
+    title: "Building Materials",
+    description: "Comprehensive range of construction materials and supplies",
+    icon: "🏭",
+    color: "from-orange-500 to-black",
+    shadowColor: "shadow-white/40"
+  }
+];
 
   // Animation variants
   const containerVariants = {
@@ -66,7 +66,8 @@ const ProductsSection = () => {
   };
 
   return (
-    <section className="w-full py-24 bg-gradient-to-b from-gray-900 to-bg-dark" ref={sectionRef}>
+    <section className="w-full py-5 bg-gradient-to-b from-gray-900 to-bg-dark" ref={sectionRef}>
+      
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -156,6 +157,8 @@ const ProductsSection = () => {
           ))}
         </motion.div>
       </div>
+
+
     </section>
   );
 };

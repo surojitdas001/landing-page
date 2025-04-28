@@ -80,9 +80,9 @@ const Navbar = ({ toggleSidebar }) => {
                     whileTap={{ scale: 0.9 }}
                 >
                     <img src="./images/logo.jpg" width={110} alt="Logo" />
-                </motion.div>
+                </motion.div>   
 
-                <div className="hidden md:flex gap-4">
+                <div className="hidden md:flex gap-10">
                     {navItems.map((item) => (
                         <div 
                             key={item.id}

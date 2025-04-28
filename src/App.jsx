@@ -6,6 +6,8 @@ import Slider from './components/Slider';
 import './index.css';
 import JourneySection from './components/Journeysection';
 import ProductsSection from './components/Productsection';
+import ManufacturingSection from './components/ManufacturingSection';
+import Footer from './components/Footer';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -24,11 +26,13 @@ function App() {
       </AnimatePresence>
       
       <Slider />
-
       <JourneySection />
-      
 
       <ProductsSection />
+      <ManufacturingSection />
+      <Footer />
+
+
     </div>
   );
 }
