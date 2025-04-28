@@ -19,17 +19,15 @@ function App() {
       {/* Navbar */}
       <Navbar toggleSidebar={toggleSidebar} />
       
-      {/* Sidebar */}
       <AnimatePresence>
         {isSidebarOpen && <Sidebar setIsSidebarOpen={setIsSidebarOpen} />}
       </AnimatePresence>
       
-      {/* Slider replaces the content section */}
       <Slider />
 
       <JourneySection />
       
-      {/* Products & Services Section */}
+
       <ProductsSection />
     </div>
   );
