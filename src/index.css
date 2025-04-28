@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom classes */
+@layer base {
+  body {
+    font-family: "Overlock", system-ui, -apple-system, sans-serif;
+    color: white;
+    background-color: #111827;
+    overflow-x: hidden;
+  }
+  
+  /* Text Arc Menu Animation */
+  @keyframes textGlow {
+    0% { text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); }
+    50% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
+    100% { text-shadow: 0 0 2px rgba(255, 255, 255, 0.5); }
+  }
+}
+
+@layer components {
+  .nav-item-hover:hover .dropdown-indicator {
+    @apply rotate-180;
+  }
+  
+  .arc-text-hover:hover {
+    color: white;
+    animation: textGlow 1.5s infinite;
+  }
+}
