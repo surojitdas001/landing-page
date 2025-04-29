@@ -1,242 +1,304 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { useState, useRef, useEffect } from 'react';
 
-const ManufacturingSection = () => {
-  const [activeTab, setActiveTab] = useState('facilities');
-  const [facilityRef, facilityInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
+const ManufacturingFacility = () => {
+  const [activeItem, setActiveItem] = useState(0);
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoRef = useRef(null);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef(null);
   
-  const [certRef, certInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
-  const facilities = [
-    {
-      id: 1,
-      title: "Modern Production Line",
-      description: "State-of-the-art automated production facilities with cutting-edge technology",
-      icon: "⚙️",
-      stats: "25,000+ sq ft"
-    },
-    {
-      id: 2,
-      title: "Quality Control Lab",
-      description: "Advanced testing equipment ensuring all products meet industry standards",
-      icon: "🔬",
-      stats: "99.8% accuracy"
-    },
-    {
-      id: 3,
-      title: "Distribution Center",
-      description: "Centralized logistics hub for efficient nationwide delivery",
-      icon: "🚚",
-      stats: "48hr delivery"
+  // Intersection Observer setup to detect when section is in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
-  ];
-
-  const certifications = [
-    {
-      id: 1,
-      name: "ISO 9001:2015",
-      description: "Quality Management System certification ensuring consistent product quality",
-      logo: "🏅",
-      year: "Since 2010"
-    },
-    {
-      id: 2,
-      name: "ISO 14001:2015",
-      description: "Environmental Management System certification for sustainable practices",
-      logo: "🌱",
-      year: "Since 2012"
-    },
-    {
-      id: 3,
-      name: "OHSAS 18001",
-      description: "Occupational Health and Safety certification for workplace safety",
-      logo: "🛡️",
-      year: "Since 2014"
-    },
-    {
-      id: 4,
-      name: "Green Building Council",
-      description: "Recognition for sustainable construction material production",
-      logo: "🏗️",
-      year: "Since 2016"
-    }
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
+    
+    return () => {
+      if (sectionRef.current) {
+        observer.disconnect();
       }
-    }
+    };
+  }, []);
+
+  // Demo images for guaranteed display
+  const demoImages = {
+    concretePlant: "./public/images/logo.jpg",
+    laboratory: "./public/images/image5.jfif",
+    distribution: "./public/images/image1.jfif",
+    videoThumbnail1: "./public/images/logo.jpg",
+    videoThumbnail2: "./public/images/logo.jpg"
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+  // Combined media items with demo images
+  const mediaItems = [
+    { 
+      id: 1, 
+      type: 'photo',
+      url: demoImages.concretePlant, 
+      title: "Concrete Mixing Plant",
+      description: "Our state-of-the-art mixing plant features automated systems for precise material proportioning, ensuring consistent high-quality concrete production. This facility can produce up to 200 cubic meters of concrete per hour, meeting diverse project requirements.",
+    },
+    { 
+      id: 2, 
+      type: 'photo',
+      url: demoImages.laboratory, 
+      title: "Quality Testing Laboratory",
+      description: "Equipped with advanced testing equipment, our quality control lab performs rigorous analysis on raw materials and finished products. Every batch undergoes comprehensive testing to ensure it meets international standards and project specifications.",
+    },
+    { 
+      id: 3, 
+      type: 'video',
+      url: './public/video.mp4', 
+      thumbnail: demoImages.videoThumbnail1, 
+      title: "Manufacturing Process Overview",
+      description: "This video provides a complete walkthrough of our cement manufacturing process, from raw material processing to final packaging. Our innovative techniques minimize energy consumption while maximizing quality and output efficiency.",
+      duration: "3:45" 
+    },
+    { 
+      id: 4, 
+      type: 'photo',
+      url: demoImages.distribution, 
+      title: "Distribution Center",
+      description: "Our strategically located distribution center enables efficient delivery to construction sites across the region. With a fleet of specialized vehicles and advanced logistics systems, we ensure timely delivery of materials even to remote locations.",
+    },
+    { 
+      id: 5, 
+      type: 'video',
+      url: "./public/dron.mp4", 
+      thumbnail: demoImages.videoThumbnail2, 
+      title: "Facility Tour",
+      description: "Take a comprehensive tour of our manufacturing facilities and see firsthand the technology and expertise behind our building materials. This guided walkthrough highlights our commitment to quality, safety, and sustainability.",
+      duration: "5:20" 
+    },
+  ];
+
+  const handleNext = () => {
+    setVideoPlaying(false);
+    setActiveItem((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
   };
 
-  const tabVariants = {
-    inactive: { opacity: 0.7, scale: 0.95 },
-    active: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { duration: 0.3 }
-    }
+  const handlePrev = () => {
+    setVideoPlaying(false);
+    setActiveItem((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1));
+  };
+
+  const handleDotClick = (index) => {
+    setVideoPlaying(false);
+    setActiveItem(index);
+  };
+
+  const toggleVideo = () => {
+    setVideoPlaying(!videoPlaying);
+    
+    // Use setTimeout to allow state update to process
+    setTimeout(() => {
+      if (!videoPlaying && videoRef.current) {
+        videoRef.current.play().catch(error => {
+          console.error("Video playback failed:", error);
+        });
+      } else if (videoPlaying && videoRef.current) {
+        videoRef.current.pause();
+      }
+    }, 0);
   };
 
   return (
-    <section className="w-full py-16 bg-gradient-to-b from-gray-800 to-gray-900">
+    <section className="w-full py-20 bg-white" ref={sectionRef}>
       <div className="max-w-6xl mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={facilityInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-12"
-          ref={facilityRef}
+        <div 
+          className={`text-center mb-16 transform transition-all duration-800 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8'}`}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">MANUFACTURING FACILITY</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">MANUFACTURING FACILITY</h2>
           <div className="w-24 h-1 bg-orange-500 mx-auto"></div>
-          <p className="text-gray-300 mt-6 max-w-2xl mx-auto">
-            Our cutting-edge facilities and certified processes ensure the highest quality products
+          <p className="text-gray-600 mt-6 max-w-2xl mx-auto">
+            Explore our state-of-the-art production facilities where innovation meets precision
           </p>
-        </motion.div>
+        </div>
 
-        {/* Tab Selector */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex rounded-lg p-1 bg-gray-700/50 backdrop-blur-sm">
-            <motion.button
-              variants={tabVariants}
-              animate={activeTab === 'facilities' ? 'active' : 'inactive'}
-              className={`px-6 py-3 rounded-lg font-medium ${activeTab === 'facilities' ? 'bg-orange-500 text-white shadow-lg' : 'text-gray-300'}`}
-              onClick={() => setActiveTab('facilities')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Facilities
-            </motion.button>
-            <motion.button
-              variants={tabVariants}
-              animate={activeTab === 'certifications' ? 'active' : 'inactive'}
-              className={`px-6 py-3 rounded-lg font-medium ${activeTab === 'certifications' ? 'bg-orange-500 text-white shadow-lg' : 'text-gray-300'}`}
-              onClick={() => setActiveTab('certifications')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Certifications
-            </motion.button>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Media display - Left side */}
+          <div 
+            className={`w-full lg:w-3/5 relative overflow-hidden rounded-xl shadow-2xl bg-gray-100 transition-all duration-600 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}
+            style={{ transitionDelay: '0.2s' }}
+          >
+            {/* Media items */}
+            <div className="relative w-full h-80 md:h-96 overflow-hidden">
+              {mediaItems.map((item, index) => (
+                <div 
+                  key={item.id}
+                  className={`absolute inset-0 transition-opacity duration-500 ${activeItem === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                >
+                  {item.type === 'photo' ? (
+                    <img 
+                      src={item.url} 
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="relative w-full h-full">
+                      {videoPlaying && activeItem === index ? (
+                        <video
+                          ref={videoRef}
+                          src={item.url}
+                          className="w-full h-full object-cover"
+                          controls
+                          autoPlay
+                          playsInline
+                          onEnded={() => setVideoPlaying(false)}
+                        />
+                      ) : (
+                        <>
+                          <img 
+                            src={item.thumbnail} 
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <button
+                              className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center shadow-lg transform transition-transform hover:scale-110 active:scale-95"
+                              onClick={toggleVideo}
+                            >
+                              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </button>
+                          </div>
+                          {item.duration && (
+                            <div className="absolute bottom-4 right-4 bg-black/70 px-2 py-1 rounded text-white text-sm">
+                              {item.duration}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Navigation arrows */}
+            <div className="absolute top-1/2 left-4 transform -translate-y-1/2 z-20">
+              <button
+                className="w-10 h-10 rounded-full bg-black/30 hover:bg-orange-500 flex items-center justify-center text-white transform transition-transform hover:scale-110 active:scale-90"
+                onClick={handlePrev}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+            </div>
+            <div className="absolute top-1/2 right-4 transform -translate-y-1/2 z-20">
+              <button
+                className="w-10 h-10 rounded-full bg-black/30 hover:bg-orange-500 flex items-center justify-center text-white transform transition-transform hover:scale-110 active:scale-90"
+                onClick={handleNext}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Dots navigation */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+              {mediaItems.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${activeItem === index ? 'bg-orange-500 w-6' : 'bg-white/70 hover:bg-white'}`}
+                  onClick={() => handleDotClick(index)}
+                  aria-label={`View item ${index + 1}`}
+                ></button>
+              ))}
+            </div>
+          </div>
+
+          {/* Content display - Right side */}
+          <div 
+            className={`w-full lg:w-2/5 transition-all duration-600 ${inView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}
+            style={{ transitionDelay: '0.3s' }}
+          >
+            {mediaItems.map((item, index) => (
+              <div
+                key={item.id}
+                className={`transition-all duration-600 ${activeItem === index ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 hidden'}`}
+              >
+                <div className="flex items-center mb-4">
+                  <span className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-semibold text-sm mr-3">
+                    {index + 1}
+                  </span>
+                  <h3 className="text-2xl font-bold text-gray-900">{item.title}</h3>
+                </div>
+                
+                <div className="mt-2 mb-6">
+                  <span className="inline-block px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
+                    {item.type === 'photo' ? 'Facility Image' : 'Process Video'}
+                  </span>
+                </div>
+                
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  {item.description}
+                </p>
+                
+                <button
+                  className="flex items-center text-orange-500 font-medium hover:text-orange-600 transition-colors hover:translate-x-1 transform transition-transform"
+                >
+                  <span>Learn more</span>
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </button>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Facilities Content */}
-        {activeTab === 'facilities' && (
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            key="facilities"
-          >
-            {facilities.map((facility) => (
-              <motion.div
-                key={facility.id}
-                className="relative p-6 rounded-xl overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 border border-gray-700"
-                variants={itemVariants}
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2)" }}
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gray-400/10 rounded-full -ml-12 -mb-12 blur-xl"></div>
-                
-                <div className="bg-gray-800/40 backdrop-blur-sm w-16 h-16 rounded-full flex items-center justify-center text-3xl mb-6">
-                  {facility.icon}
-                </div>
-                
-                <h3 className="text-xl font-bold text-white mb-2">{facility.title}</h3>
-                <p className="text-gray-300 mb-4">{facility.description}</p>
-                
-                <div className="mt-4 pt-4 border-t border-gray-700/50">
-                  <span className="text-orange-400 font-semibold">{facility.stats}</span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
-        {/* Certifications Content */}
-        {activeTab === 'certifications' && (
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            key="certifications"
-            ref={certRef}
-          >
-            {certifications.map((cert) => (
-              <motion.div
-                key={cert.id}
-                className="flex items-center p-6 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700"
-                variants={itemVariants}
-                whileHover={{ 
-                  scale: 1.02, 
-                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2)",
-                  transition: { duration: 0.2 }
-                }}
-              >
-                <div className="flex-shrink-0 w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center text-3xl mr-6">
-                  {cert.logo}
-                </div>
-                <div>
-                  <div className="flex items-center">
-                    <h3 className="text-xl font-bold text-white">{cert.name}</h3>
-                    <span className="ml-3 text-sm font-medium text-orange-400">{cert.year}</span>
-                  </div>
-                  <p className="text-gray-300 mt-1">{cert.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
-        {/* Stats Row */}
-        <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={facilityInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
+        {/* Feature highlights */}
+        <div 
+          className={`grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 transition-all duration-800 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          style={{ transitionDelay: '0.5s' }}
         >
-          <div className="p-4 rounded-lg bg-gray-800/30 backdrop-blur-sm">
-            <div className="text-3xl font-bold text-orange-500 mb-1">25+</div>
-            <div className="text-gray-300">Years Experience</div>
+          <div className="bg-orange-50 p-6 rounded-lg border border-gray-200 shadow-lg">
+            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Modern Infrastructure</h3>
+            <p className="text-gray-600">State-of-the-art equipment and technology ensuring maximum efficiency and precision</p>
           </div>
-          <div className="p-4 rounded-lg bg-gray-800/30 backdrop-blur-sm">
-            <div className="text-3xl font-bold text-orange-500 mb-1">100+</div>
-            <div className="text-gray-300">Team Members</div>
+          
+          <div className="bg-orange-50 p-6 rounded-lg border border-gray-200 shadow-lg">
+            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Quality Control</h3>
+            <p className="text-gray-600">Rigorous testing protocols to ensure every product meets our exacting standards</p>
           </div>
-          <div className="p-4 rounded-lg bg-gray-800/30 backdrop-blur-sm">
-            <div className="text-3xl font-bold text-orange-500 mb-1">12</div>
-            <div className="text-gray-300">Patents</div>
+          
+          <div className="bg-orange-50 p-6 rounded-lg border border-gray-200 shadow-lg">
+            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
+              <svg className="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Sustainable Practices</h3>
+            <p className="text-gray-600">Environmentally conscious manufacturing processes reducing our carbon footprint</p>
           </div>
-          <div className="p-4 rounded-lg bg-gray-800/30 backdrop-blur-sm">
-            <div className="text-3xl font-bold text-orange-500 mb-1">5000+</div>
-            <div className="text-gray-300">Projects Completed</div>
-          </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 };
 
-export default ManufacturingSection;
+export default ManufacturingFacility;

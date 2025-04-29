@@ -65,7 +65,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-b from-gray-900 to-black pt-16 pb-6" ref={footerRef}>
+    <footer className="bg-gradient-white pt-16 pb-6" ref={footerRef}>
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12"
@@ -79,7 +79,7 @@ const Footer = () => {
             variants={itemVariants}
           >
             <div className="mb-6 flex items-center">
-              <div className="text-white font-bold text-2xl mr-2">CONCRETE</div>
+              <div className="text-black font-bold text-2xl mr-2">CONCRETE</div>
               <div className="bg-orange-500 h-6 w-6 rounded-full"></div>
             </div>
             <p className="text-gray-400 mb-6 pr-4">
@@ -106,7 +106,7 @@ const Footer = () => {
           {/* Links */}
           {footerLinks.map((column, index) => (
             <motion.div key={index} variants={itemVariants}>
-              <h3 className="text-white font-semibold text-lg mb-4">{column.title}</h3>
+              <h3 className="text-black font-semibold text-lg mb-4">{column.title}</h3>
               <ul className="space-y-2">
                 {column.links.map((link, linkIndex) => (
                   <motion.li 

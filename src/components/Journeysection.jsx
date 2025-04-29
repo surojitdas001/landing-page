@@ -41,8 +41,8 @@ const JourneySection = () => {
       ref: ref2,
       inView: inView2,
       year: '2015',
-      title: 'Global Expansion',
-      description: 'Expanded operations to international markets'
+      title: 'Expansion',
+      description: 'Expanded operations todevelopment markets'
     },
     {
       ref: ref3,
@@ -74,7 +74,7 @@ const JourneySection = () => {
   };
 
   return (
-    <section className="w-full py-16 md:py-24 bg-gradient-to-b from-bg-dark to-gray-900 overflow-hidden">
+    <section className="w-full py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto px-4" ref={mainRef}>
         <motion.div
           initial="hidden"
@@ -83,14 +83,14 @@ const JourneySection = () => {
           variants={titleVariants}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">OUR JOURNEY</h2>
-          <div className="w-24 h-1 bg-primary mx-auto"></div>
+          <h2 className="text-3xl md:text-5xl font-bold text-black mb-4">OUR JOURNEY</h2>
+          <div className="w-24 h-1 bg-orange-500 mx-auto"></div>
         </motion.div>
 
         <div className="relative">
           {/* Main Timeline Container */}
           <motion.div 
-            className="relative p-4 md:p-8 bg-gray-800/50 rounded-xl backdrop-blur-sm border border-white/10 shadow-xl w-full overflow-hidden"
+            className="relative p-4 md:p-8 bg-white rounded-xl backdrop-blur-sm border border-orange-100 shadow-xl w-full overflow-hidden"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -112,7 +112,7 @@ const JourneySection = () => {
                   <div className="flex flex-col items-center">
                     {/* Node */}
                     <motion.div 
-                      className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 mb-4 z-10"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-orange-500 rounded-full flex items-center justify-center shadow-lg shadow-orange-300 mb-4 z-10"
                       initial={{ scale: 0 }}
                       animate={item.inView ? { scale: 1 } : {}}
                       transition={{ 
@@ -126,9 +126,9 @@ const JourneySection = () => {
                     </motion.div>
 
                     {/* Content */}
-                    <div className="text-center p-3 md:p-4 bg-gray-800/80 rounded-lg backdrop-blur-sm border border-white/5 w-full md:max-w-xs">
-                      <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
-                      <p className="text-sm md:text-base text-gray-300 mt-2">{item.description}</p>
+                    <div className="text-center p-3 md:p-4 bg-orange-50 rounded-lg backdrop-blur-sm border border-orange-200 w-full md:max-w-xs">
+                      <h3 className="text-lg md:text-xl font-bold text-black">{item.title}</h3>
+                      <p className="text-sm md:text-base text-gray-700 mt-2">{item.description}</p>
                     </div>
                   </div>
 
@@ -140,7 +140,7 @@ const JourneySection = () => {
                         <motion.path
                           d={generateWavePath(index)}
                           fill="none"
-                          stroke="rgba(59, 130, 246, 0.15)" 
+                          stroke="rgba(249, 115, 22, 0.15)" 
                           strokeWidth="6"
                           strokeLinecap="round"
                         />
@@ -149,7 +149,7 @@ const JourneySection = () => {
                         <motion.path
                           d={generateWavePath(index)}
                           fill="none"
-                          stroke="rgba(59, 130, 246, 0.4)" 
+                          stroke="rgba(249, 115, 22, 0.4)" 
                           strokeWidth="3"
                           strokeLinecap="round"
                         />
@@ -158,7 +158,7 @@ const JourneySection = () => {
                         <motion.path
                           d={generateWavePath(index)}
                           fill="none"
-                          stroke="rgba(59, 130, 246, 0.9)" 
+                          stroke="rgba(249, 115, 22, 0.9)" 
                           strokeWidth="2"
                           strokeLinecap="round"
                           initial={{ pathLength: 0, pathOffset: 0 }}
@@ -177,7 +177,7 @@ const JourneySection = () => {
                           cx="0"
                           cy="15"
                           r="3"
-                          fill="#3b82f6"
+                          fill="#f97316"
                           initial={{ x: 0, opacity: 0 }}
                           animate={mainInView ? {
                             x: [0, 200],
@@ -193,7 +193,7 @@ const JourneySection = () => {
                           cx="0"
                           cy="15"
                           r="2"
-                          fill="#60a5fa"
+                          fill="#fdba74"
                           initial={{ x: 0, opacity: 0 }}
                           animate={mainInView ? {
                             x: [0, 200],

@@ -42,7 +42,7 @@ const SlideContent = ({ slide }) => {
             className="text-xl text-white/90 mb-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             {slide.description}
           </motion.p>
@@ -50,7 +50,7 @@ const SlideContent = ({ slide }) => {
             className="px-8 py-3 bg-primary text-white border-none rounded text-base font-semibold cursor-pointer"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

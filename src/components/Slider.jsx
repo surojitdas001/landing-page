@@ -134,7 +134,7 @@ const Slider = () => {
           exit="exit"
           transition={{
             x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.5 }
+            opacity: { duration: 0.2 }
           }}
           className="absolute top-0 left-0 w-full h-full"
         >

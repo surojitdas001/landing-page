@@ -8,6 +8,7 @@ import JourneySection from './components/Journeysection';
 import ProductsSection from './components/Productsection';
 import ManufacturingSection from './components/ManufacturingSection';
 import Footer from './components/Footer';
+import CertificationsSection from './components/CertificationsSection';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -30,6 +31,7 @@ function App() {
 
       <ProductsSection />
       <ManufacturingSection />
+      <CertificationsSection />
       <Footer />
 
 

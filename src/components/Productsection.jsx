@@ -15,7 +15,7 @@ const products = [
     title: "Portland Cement",
     description: "High-quality Portland cement for construction projects",
     icon: "🏗️",
-    color: "from-black to-gray-500",
+    color: "from-black to-gray-800",
     shadowColor: "shadow-orange-500/40"
   },
   {
@@ -23,7 +23,7 @@ const products = [
     title: "Ready Mix Concrete",
     description: "Custom ready-mix concrete solutions for all applications",
     icon: "🏢",
-    color: "from-gray-300 to-orange-600",
+    color: "from-orange-600 to-orange-500",
     shadowColor: "shadow-black/40"
   },
   {
@@ -66,7 +66,7 @@ const products = [
   };
 
   return (
-    <section className="w-full py-5 bg-gradient-to-b from-gray-900 to-bg-dark" ref={sectionRef}>
+    <section className="w-full py-16 bg-white" ref={sectionRef}>
       
       <div className="max-w-6xl mx-auto px-4">
         <motion.div
@@ -75,9 +75,9 @@ const products = [
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">PRODUCTS & SERVICES</h2>
-          <div className="w-24 h-1 bg-primary mx-auto"></div>
-          <p className="text-gray-300 mt-6 max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">PRODUCTS & SERVICES</h2>
+          <div className="w-24 h-1 bg-orange-500 mx-auto"></div>
+          <p className="text-gray-600 mt-6 max-w-2xl mx-auto">
             Discover our innovative solutions designed to transform your business
           </p>
         </motion.div>
@@ -91,7 +91,7 @@ const products = [
           {products.map((product, index) => (
             <motion.div
               key={product.id}
-              className={`relative h-[400px] rounded-lg overflow-hidden cursor-pointer transform transition-all duration-500`}
+              className={`relative h-[400px] rounded-lg overflow-hidden cursor-pointer transform transition-all duration-500 shadow-xl`}
               variants={cardVariants}
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
               onHoverStart={() => setHoveredCard(product.id)}
@@ -138,7 +138,7 @@ const products = [
 
                 <div>
                   <h3 className="text-2xl font-bold text-white mb-3">{product.title}</h3>
-                  <p className="text-white/80">{product.description}</p>
+                  <p className="text-white/90">{product.description}</p>
 
                   <motion.div 
                     className="mt-6 flex items-center gap-2 text-white"
@@ -156,9 +156,32 @@ const products = [
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Added Product Categories */}
+        <motion.div 
+          className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-4"
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <div className="p-6 bg-orange-50 rounded-lg text-center shadow-md border border-orange-100">
+            <div className="text-orange-500 text-3xl mb-2">🧱</div>
+            <h4 className="font-bold text-black">Construction</h4>
+          </div>
+          <div className="p-6 bg-orange-50 rounded-lg text-center shadow-md border border-orange-100">
+            <div className="text-orange-500 text-3xl mb-2">🏠</div>
+            <h4 className="font-bold text-black">Residential</h4>
+          </div>
+          <div className="p-6 bg-orange-50 rounded-lg text-center shadow-md border border-orange-100">
+            <div className="text-orange-500 text-3xl mb-2">🏙️</div>
+            <h4 className="font-bold text-black">Commercial</h4>
+          </div>
+          <div className="p-6 bg-orange-50 rounded-lg text-center shadow-md border border-orange-100">
+            <div className="text-orange-500 text-3xl mb-2">🛣️</div>
+            <h4 className="font-bold text-black">Infrastructure</h4>
+          </div>
+        </motion.div>
       </div>
-
-
     </section>
   );
 };
